@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
-import { useRegisterMutation } from "@/store/services/authService";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,42 +15,6 @@ export default function RegisterPage() {
 
   const router = useRouter();
   const { register, isRegistering } = useAuth();
-  const [registerUser, { isLoading, error }] = useRegisterMutation();
-
-  // const handleRegister = async (e: any) => {
-  //   e.preventDefault();
-
-  //   // Basic validation
-  //   if (!email || !password || !repeatPassword) {
-  //     return alert("Please fill all fields");
-  //   }
-
-  //   if (password !== repeatPassword) {
-  //     return alert("Passwords do not match");
-  //   }
-
-  //   if (!isAgreed) {
-  //     return alert("You must agree to the terms.");
-  //   }
-
-  //   try {
-  //     const result = await registerUser({
-  //       email,
-  //       password,
-  //       firstName: "Appify", // take from form if needed
-  //       lastName: "Lab", // take from form if needed
-  //     }).unwrap();
-
-  //     console.log("Registration success:", result);
-  //     localStorage.setItem("appData", (result as any).data);
-
-  //     // Redirect or push to login
-  //     router.push("/login");
-  //   } catch (err: any) {
-  //     console.error("Registration failed:", err);
-  //     alert(err?.data?.message || "Registration failed");
-  //   }
-  // };
 
   const handleRegister = async (e: any) => {
     e.preventDefault();
@@ -221,10 +184,14 @@ export default function RegisterPage() {
 
                 <button
                   onClick={handleRegister}
-                  disabled={isLoading}
-                  className="w-full bg-primary text-primary-foreground rounded px-6 py-3 font-semibold hover:opacity-90 transition-opacity mb-8"
+                  disabled={isRegistering}
+                  className="w-full bg-primary text-primary-foreground rounded px-6 py-3 font-semibold hover:opacity-90 transition-opacity mb-8 flex items-center justify-center"
                 >
-                  {isLoading ? <Loader2 /> : "  Login now"}
+                  {isRegistering ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Login now"
+                  )}
                 </button>
 
                 <p className="text-center text-sm text-muted-foreground">

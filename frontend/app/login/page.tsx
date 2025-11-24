@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/hooks/use-auth";
 import { useLoginMutation } from "@/store/services/authService";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -197,9 +198,14 @@ export default function LoginPage() {
 
                 <button
                   onClick={handleLogin}
-                  className="w-full bg-primary text-primary-foreground rounded px-6 py-3 font-semibold hover:opacity-90 transition-opacity mb-8"
+                  disabled={isLoggingIn}
+                  className="w-full bg-primary text-primary-foreground rounded px-6 py-3 font-semibold hover:opacity-90 transition-opacity mb-8 flex items-center justify-center"
                 >
-                  Login now
+                  {isLoggingIn ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Login now"
+                  )}
                 </button>
 
                 <p className="text-center text-sm text-muted-foreground">

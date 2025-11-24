@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -123,4 +123,292 @@
 
 button {
   cursor: pointer;
+} */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* Updated radius for modern look */
+  --radius: 0.75rem;
+
+  /* BuddyScript Light Theme Colors */
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.2 0 0);
+
+  /* Card colors - white with subtle shadow */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0 0);
+
+  /* Popover colors */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0 0);
+
+  /* Primary - BuddyScript Blue (#3B9EFF / #2B8CEB) */
+  --primary: oklch(0.65 0.15 240);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Secondary - Light gray background */
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.3 0 0);
+
+  /* Muted - for subtle text and backgrounds */
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.5 0 0);
+
+  /* Accent - slightly darker than muted */
+  --accent: oklch(0.95 0 0);
+  --accent-foreground: oklch(0.25 0 0);
+
+  /* Destructive - red for errors */
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* Border - very light gray */
+  --border: oklch(0.93 0 0);
+
+  /* Input - similar to border */
+  --input: oklch(0.94 0 0);
+
+  /* Ring - focus ring color (blue) */
+  --ring: oklch(0.65 0.15 240);
+
+  /* Chart colors - vibrant palette */
+  --chart-1: oklch(0.65 0.15 240);
+  --chart-2: oklch(0.6 0.18 320);
+  --chart-3: oklch(0.62 0.2 160);
+  --chart-4: oklch(0.68 0.16 50);
+  --chart-5: oklch(0.58 0.22 280);
+
+  /* Sidebar colors */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.25 0 0);
+  --sidebar-primary: oklch(0.65 0.15 240);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.25 0 0);
+  --sidebar-border: oklch(0.93 0 0);
+  --sidebar-ring: oklch(0.65 0.15 240);
+
+  /* Additional BuddyScript specific colors */
+  --buddyscript-blue: oklch(0.65 0.15 240);
+  --buddyscript-light-blue: oklch(0.92 0.05 240);
+  --buddyscript-green: oklch(0.6 0.15 150);
+  --buddyscript-illustration-blue: oklch(0.75 0.1 240);
+}
+
+.dark {
+  /* Dark theme background */
+  --background: oklch(0.15 0 0);
+  --foreground: oklch(0.95 0 0);
+
+  /* Dark card colors */
+  --card: oklch(0.2 0 0);
+  --card-foreground: oklch(0.95 0 0);
+
+  /* Dark popover */
+  --popover: oklch(0.2 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+
+  /* Primary - lighter blue for dark mode */
+  --primary: oklch(0.7 0.15 240);
+  --primary-foreground: oklch(0.15 0 0);
+
+  /* Dark secondary */
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: oklch(0.95 0 0);
+
+  /* Dark muted */
+  --muted: oklch(0.25 0 0);
+  --muted-foreground: oklch(0.65 0 0);
+
+  /* Dark accent */
+  --accent: oklch(0.28 0 0);
+  --accent-foreground: oklch(0.95 0 0);
+
+  /* Dark destructive */
+  --destructive: oklch(0.704 0.191 22.216);
+
+  /* Dark borders */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+
+  /* Dark ring */
+  --ring: oklch(0.7 0.15 240);
+
+  /* Dark chart colors */
+  --chart-1: oklch(0.7 0.15 240);
+  --chart-2: oklch(0.65 0.18 320);
+  --chart-3: oklch(0.67 0.2 160);
+  --chart-4: oklch(0.72 0.16 50);
+  --chart-5: oklch(0.63 0.22 280);
+
+  /* Dark sidebar */
+  --sidebar: oklch(0.18 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.7 0.15 240);
+  --sidebar-primary-foreground: oklch(0.95 0 0);
+  --sidebar-accent: oklch(0.25 0 0);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.7 0.15 240);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+      "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  }
+
+  /* BuddyScript specific utilities */
+  .buddyscript-blue {
+    color: var(--buddyscript-blue);
+  }
+
+  .bg-buddyscript-blue {
+    background-color: var(--buddyscript-blue);
+  }
+
+  .bg-buddyscript-light-blue {
+    background-color: var(--buddyscript-light-blue);
+  }
+
+  /* Status indicator dots */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .status-online {
+    @apply bg-green-500;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Primary button styling */
+button.btn-primary {
+  @apply bg-primary text-primary-foreground rounded-lg px-6 py-2.5 font-medium;
+  @apply hover:opacity-90 active:scale-[0.98];
+}
+
+/* Secondary button styling */
+button.btn-secondary {
+  @apply bg-secondary text-secondary-foreground rounded-lg px-6 py-2.5 font-medium;
+  @apply hover:bg-accent active:scale-[0.98];
+}
+
+/* Input styling */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea {
+  @apply w-full rounded-lg border border-input bg-background px-4 py-2.5;
+  @apply focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
+  @apply placeholder:text-muted-foreground;
+}
+
+/* Card component */
+.card {
+  @apply bg-card text-card-foreground rounded-xl;
+}
+
+/* Sidebar item hover effect */
+.sidebar-item {
+  @apply flex items-center gap-3 px-4 py-2.5 rounded-lg;
+  @apply hover:bg-sidebar-accent hover:text-sidebar-accent-foreground;
+  @apply cursor-pointer;
+}
+
+.sidebar-item.active {
+  @apply bg-sidebar-primary text-sidebar-primary-foreground;
+}
+
+/* Badge styling */
+.badge {
+  @apply inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-medium;
+}
+
+.badge-new {
+  @apply text-white;
+}
+
+/* Avatar styling */
+.avatar {
+  @apply rounded-full object-cover;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.8 0 0);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.7 0 0);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(0.3 0 0);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.4 0 0);
 }

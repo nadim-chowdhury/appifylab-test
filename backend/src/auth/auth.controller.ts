@@ -17,7 +17,9 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
+import { TokenResponseDto } from './dto/token-response.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { UserResponseDto } from '../users/dto/user-response.dto';
 
@@ -65,6 +67,32 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
+  @Post('refresh')
+  @UseGuards(RefreshAuthGuard)
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Refresh access token',
+    description:
+      'Use the refresh token to get a new access token and refresh token',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Tokens refreshed successfully',
+    type: TokenResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Invalid or expired refresh token',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Access Denied',
+  })
+  async refreshTokens(@CurrentUser() user: any): Promise<TokenResponseDto> {
+    return this.authService.refreshTokens(user.sub, user.refreshToken);
+  }
+
   @Get('validate')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -88,8 +116,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Logout user',
-    description:
-      'For JWT-based auth, logout is handled client-side by removing the token. This endpoint is for logging/analytics purposes.',
+    description: 'Invalidates the refresh token stored in the database',
   })
   @ApiResponse({
     status: 200,
@@ -99,7 +126,8 @@ export class AuthController {
     status: 401,
     description: 'Unauthorized',
   })
-  logout(): { message: string } {
+  async logout(@CurrentUser() user: any): Promise<{ message: string }> {
+    await this.authService.logout(user.id);
     return { message: 'Logout successful' };
   }
 }

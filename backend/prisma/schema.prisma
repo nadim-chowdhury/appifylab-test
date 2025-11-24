@@ -14,13 +14,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  firstName String   @map("first_name")
-  lastName  String   @map("last_name")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id           String   @id @default(uuid())
+  email        String   @unique
+  password     String
+  firstName    String   @map("first_name")
+  lastName     String   @map("last_name")
+  refreshToken String?  @map("refresh_token") @db.Text // Add this field
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   posts        Post[]
   postLikes    PostLike[]

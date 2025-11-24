@@ -1,7 +1,10 @@
 "use client";
 
+import { useAuth } from "@/hooks/use-auth";
+import { useLoginMutation } from "@/store/services/authService";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -9,9 +12,61 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
 
-  const handleLogin = (e: any) => {
+  const router = useRouter();
+  const { login, isLoggingIn } = useAuth();
+  const [loginUser, { isLoading }] = useLoginMutation();
+
+  // const handleLogin = async (e: any) => {
+  //   e.preventDefault();
+
+  //   if (!email || !password) {
+  //     return alert("Please enter both email and password");
+  //   }
+
+  //   try {
+  //     const result = await loginUser({
+  //       email,
+  //       password,
+  //     }).unwrap();
+
+  //     console.log("Login success:", result);
+
+  //     // Save token (optional)
+  //     if (rememberMe) {
+  //       localStorage.setItem("appData", (result as any).data);
+  //     } else {
+  //       localStorage.setItem("appData", (result as any).data);
+  //     }
+
+  //     // Redirect
+  //     window.location.href = "/feed";
+  //   } catch (err: any) {
+  //     console.error("Login failed:", err);
+  //     alert(err?.data?.message || "Invalid email or password");
+  //   }
+  // };
+
+  const handleLogin = async (e: any) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password, rememberMe });
+
+    if (!email || !password) {
+      return alert("Email and password are required.");
+    }
+
+    const result = await login({ email, password });
+
+    if (result.success) {
+      // Persist token manually if needed
+      if (rememberMe) {
+        localStorage.setItem("appData", (result as any).data);
+      } else {
+        localStorage.setItem("appData", (result as any).data);
+      }
+
+      router.push("/feed");
+    } else {
+      alert(result.error);
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -166,7 +221,7 @@ export default function LoginPage() {
       <Image
         src="/assets/images/shape1.png"
         alt=""
-        width={160}
+        width={240}
         height={90}
         className="absolute top-0 left-0"
       />
@@ -175,7 +230,7 @@ export default function LoginPage() {
         alt=""
         width={680}
         height={360}
-        className="absolute -top-40 right-20 opacity-50"
+        className="absolute -top-40 right-20 opacity-40"
       />
       <Image
         src="/assets/images/dark_shape2.svg"

@@ -1,7 +1,11 @@
 "use client";
 
+import { useAuth } from "@/hooks/use-auth";
+import { useRegisterMutation } from "@/store/services/authService";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterPage() {
@@ -10,9 +14,72 @@ export default function RegisterPage() {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [isAgreed, setIsAgreed] = useState(false);
 
-  const handleRegister = (e: any) => {
+  const router = useRouter();
+  const { register, isRegistering } = useAuth();
+  const [registerUser, { isLoading, error }] = useRegisterMutation();
+
+  // const handleRegister = async (e: any) => {
+  //   e.preventDefault();
+
+  //   // Basic validation
+  //   if (!email || !password || !repeatPassword) {
+  //     return alert("Please fill all fields");
+  //   }
+
+  //   if (password !== repeatPassword) {
+  //     return alert("Passwords do not match");
+  //   }
+
+  //   if (!isAgreed) {
+  //     return alert("You must agree to the terms.");
+  //   }
+
+  //   try {
+  //     const result = await registerUser({
+  //       email,
+  //       password,
+  //       firstName: "Appify", // take from form if needed
+  //       lastName: "Lab", // take from form if needed
+  //     }).unwrap();
+
+  //     console.log("Registration success:", result);
+  //     localStorage.setItem("appData", (result as any).data);
+
+  //     // Redirect or push to login
+  //     router.push("/login");
+  //   } catch (err: any) {
+  //     console.error("Registration failed:", err);
+  //     alert(err?.data?.message || "Registration failed");
+  //   }
+  // };
+
+  const handleRegister = async (e: any) => {
     e.preventDefault();
-    console.log("Register attempt:", { email, password });
+
+    if (!email || !password || !repeatPassword) {
+      return alert("All fields are required.");
+    }
+
+    if (password !== repeatPassword) {
+      return alert("Passwords do not match.");
+    }
+
+    if (!isAgreed) {
+      return alert("You must agree to the terms.");
+    }
+
+    const result = await register({
+      email,
+      password,
+      firstName: "Appify", // add input for these later
+      lastName: "Lab",
+    });
+
+    if (result.success) {
+      router.push("/login");
+    } else {
+      alert(result.error);
+    }
   };
 
   const handleGoogleRegister = () => {
@@ -127,8 +194,8 @@ export default function RegisterPage() {
                   <input
                     id="repeatPassword"
                     type="repeatPassword"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={repeatPassword}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
                     className="w-full bg-background border border-input rounded px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow"
                     placeholder="Repeat your password"
                   />
@@ -154,9 +221,10 @@ export default function RegisterPage() {
 
                 <button
                   onClick={handleRegister}
+                  disabled={isLoading}
                   className="w-full bg-primary text-primary-foreground rounded px-6 py-3 font-semibold hover:opacity-90 transition-opacity mb-8"
                 >
-                  Login now
+                  {isLoading ? <Loader2 /> : "  Login now"}
                 </button>
 
                 <p className="text-center text-sm text-muted-foreground">
@@ -178,7 +246,7 @@ export default function RegisterPage() {
       <Image
         src="/assets/images/shape1.png"
         alt=""
-        width={160}
+        width={240}
         height={90}
         className="absolute top-0 left-0"
       />
@@ -187,7 +255,7 @@ export default function RegisterPage() {
         alt=""
         width={680}
         height={360}
-        className="absolute -top-40 right-20 opacity-50"
+        className="absolute -top-40 right-20 opacity-40"
       />
       <Image
         src="/assets/images/dark_shape2.svg"

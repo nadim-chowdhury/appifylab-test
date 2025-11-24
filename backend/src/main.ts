@@ -4,6 +4,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import compression from 'compression';
 import helmet from 'helmet';
+import { TransformInterceptor } from './common/interceptors/response.interceptor';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -46,15 +48,17 @@ async function bootstrap() {
     }),
   );
 
+  // Global response transformation interceptor
+  app.useGlobalInterceptors(new TransformInterceptor());
+
+  // Global exception filter for consistent error responses
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   // Swagger API documentation
   const config = new DocumentBuilder()
     .setTitle('Social Feed API')
     .setDescription('API documentation for Social Feed Application')
     .setVersion('1.0')
-    .addTag('auth', 'Authentication endpoints')
-    .addTag('posts', 'Post management endpoints')
-    .addTag('comments', 'Comment management endpoints')
-    .addTag('likes', 'Like management endpoints')
     .addBearerAuth(
       {
         type: 'http',

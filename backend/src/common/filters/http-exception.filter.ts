@@ -6,50 +6,44 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { Prisma } from '@prisma/client';
 
 @Catch()
-export class AllExceptionsFilter implements ExceptionFilter {
+export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message: string | string[] = 'Internal server error';
+    let message = 'Internal server error';
+    let errors: any = null;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
-      message =
-        typeof exceptionResponse === 'string'
-          ? exceptionResponse
-          : (exceptionResponse as any).message;
-    } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-      status = HttpStatus.BAD_REQUEST;
-      message = this.handlePrismaError(exception);
+
+      if (typeof exceptionResponse === 'string') {
+        message = exceptionResponse;
+      } else if (typeof exceptionResponse === 'object') {
+        message =
+          (exceptionResponse as any).message ||
+          (exceptionResponse as any).error ||
+          'Request failed';
+        errors = (exceptionResponse as any).errors || null;
+      }
     } else if (exception instanceof Error) {
       message = exception.message;
     }
 
-    response.status(status).json({
+    const errorResponse = {
+      success: false,
       statusCode: status,
-      message,
+      message: Array.isArray(message) ? message : [message],
+      errors,
       timestamp: new Date().toISOString(),
-    });
-  }
+      path: request.url,
+    };
 
-  private handlePrismaError(
-    error: Prisma.PrismaClientKnownRequestError,
-  ): string {
-    switch (error.code) {
-      case 'P2002':
-        return 'A record with this value already exists';
-      case 'P2025':
-        return 'Record not found';
-      case 'P2003':
-        return 'Foreign key constraint failed';
-      default:
-        return 'Database error occurred';
-    }
+    response.status(status).json(errorResponse);
   }
 }

@@ -5,9 +5,12 @@ import IconButton from "./icon-button";
 import UserProfile from "./user-profile";
 import { useState } from "react";
 import { ProfileDropdown } from "./profile-dropdown";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function HeaderActions() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { logout, user } = useAuth();
 
   return (
     <div className="relative">
@@ -17,7 +20,8 @@ export default function HeaderActions() {
         <IconButton icon={Bell} badge={6} />
         <IconButton icon={MessageCircle} badge={2} />
         <UserProfile
-          name="Dylan Field"
+          // name="Dylan Field"
+          name={user ? `${user.firstName} ${user.lastName}` : "Dylan Field"}
           avatar="/assets/images/people1.png"
           onClick={() => setIsModalOpen(!isModalOpen)}
         />

@@ -1,6 +1,13 @@
-export const MenuItem = ({ icon: Icon, label, badge, active }: any) => {
+export const MenuItem = ({
+  icon: Icon,
+  label,
+  badge,
+  active,
+  onClick,
+}: any) => {
   return (
     <button
+      onClick={onClick}
       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
         active ? "bg-blue-50 text-blue-600" : "text-gray-700 hover:bg-gray-50"
       }`}

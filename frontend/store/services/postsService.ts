@@ -93,7 +93,10 @@ export const postsService = baseApi.injectEndpoints({
         url: `/likes/posts/${postId}`,
         method: "POST",
       }),
-      invalidatesTags: (result, error, postId) => [{ type: "Post", postId }],
+      invalidatesTags: (result, error, postId) => [
+        { type: "Post", id: postId },
+        { type: "Post", id: "LIST" },
+      ],
     }),
   }),
 });

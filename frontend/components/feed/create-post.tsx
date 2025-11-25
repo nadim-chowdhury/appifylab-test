@@ -34,7 +34,7 @@ export const CreatePost = () => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-4">
       <div className="flex items-start space-x-3 mb-4">
-        <Avatar name={`${user?.firstName} ${user?.lastName}`} size="md" src={null} />
+        <Avatar name={`${user?.firstName} ${user?.lastName}`} size="md" src={'/assets/images/people1.png'} />
         <div className="flex-1">
           <textarea
             value={content}
